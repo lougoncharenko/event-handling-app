@@ -11,6 +11,19 @@ from sqlalchemy.orm import backref
 
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(80), nullable=False)
+    phone = db.Column(db.String(80), nullable=False)
+    
+    # events_attending = db.Column(db.String(80), nullable=False)
+    events_attending.id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
+    events_attending = db.relationship('Events', back_populates='')
+
+    def __str__(self):
+        return f'<Guest: {self.name}>'
+
+    def __repr__(self):
+        return f'<Guest: {self.name} Email: {self.email}>'
 
 # TODO: Create a model called `Event` with the following fields:
 # - id: primary key
@@ -18,6 +31,14 @@ class Guest(db.Model):
 # - description: String column
 # - date_and_time: DateTime column
 # - guests: relationship to "Guest" table with a secondary table
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
+    date_and_time = db.Column(db.Date)
+
+    guest_id = db.Column(db.Integer, db.ForeignKey('guest.id'), nullable=False)
+    guests = 
 
 # STRETCH CHALLENGE: Add a field `event_type` as an Enum column that denotes the
 # type of event (Party, Study, Networking, etc)
