@@ -1,6 +1,7 @@
 """Create database models to represent tables."""
 from events_app import db
 from sqlalchemy.orm import backref
+import enum
 
 class Event_type (enum.Enum):
     PARTY = 1
