@@ -41,7 +41,7 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(200), nullable=False)
-    date_and_time = db.Column(db.Date)
+    date_and_time = db.Column(db.DateTime, nullable=False)
 
     guest_id = db.Column(db.Integer, db.ForeignKey('guest.id'), nullable=False)
     guests = db.relationship('Guest', back_populates='')
