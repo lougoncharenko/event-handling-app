@@ -32,7 +32,7 @@ def create():
         new_event_description = request.form.get('description')
         date = request.form.get('date')
         time = request.form.get('time')
-        event_type = request.form.get('event_type')
+        event_type = request.form.get('Event_type')
 
         try:
             date_and_time = datetime.strptime(

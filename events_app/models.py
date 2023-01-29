@@ -3,7 +3,7 @@ from events_app import db
 from sqlalchemy.orm import backref
 import enum
 
-class EventType(enum.Enum):
+class Event_type(enum.Enum):
     PARTY = 1
     STUDY = 2
     NETWORKING = 3
@@ -27,7 +27,7 @@ class Event(db.Model):
     description = db.Column(db.String(250), nullable=False)
     date_and_time = db.Column(db.DateTime, nullable=False)
 
-    event_type = db.Column(db.Enum(EventType), default=EventType.CONFERENCE)
+    event_type = db.Column(db.Enum(Event_type), default=Event_type.CONFERENCE)
 
     guests = db.relationship('Guest', secondary='guest_event', back_populates='events_attending')
 
