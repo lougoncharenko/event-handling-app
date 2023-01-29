@@ -17,6 +17,8 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     """Show upcoming events to users!"""
+
+    # TODO: Get all events and send to the template
     events = Event.query.all()
     
     return render_template('index.html', events=events)
@@ -43,6 +45,7 @@ def create():
         new_event = Event(title=new_event_title, description=new_event_description, date_and_time=date_and_time, event_type=event_type)
         db.session.add(new_event)
         db.session.commit()
+
         flash('Event created.')
         return redirect(url_for('main.index'))
     else:
@@ -53,37 +56,37 @@ def create():
 def event_detail(event_id):
     """Show a single event."""
 
-    selected_event = Event.query.filter_by(id=event_id).one()
+    this_event = Event.query.filter_by(id=event_id).one()
     
-    return render_template('event_detail.html', selected_event=selected_event)
+    return render_template('event_detail.html', this_event=this_event)
 
 
 @main.route('/event/<event_id>', methods=['POST'])
 def rsvp(event_id):
     """RSVP to an event."""
-    # TODO: Get the event with the given id from the database
-    selected_event = Event.query.filter_by(id=event_id).one()
+    this_event = Event.query.filter_by(id=event_id).one()
     is_returning_guest = request.form.get('returning')
     guest_name = request.form.get('guest_name')
 
     if is_returning_guest:
-        selected_guest = Guest.query.filter_by(name=guest_name).one_or_none()
-        if selected_guest is None:
+        this_guest = Guest.query.filter_by(name=guest_name).one_or_none()
+        if this_guest is None:
             error = 'Guest not found!'
             context = {
                 'error' : error,
-                'selected_event' : selected_event
+                'this_event' : this_event
             }
             return render_template('event_detail.html', **context)
         else:
-            selected_guest.events_attending.append(selected_event)
-            db.session.add(selected_guest)
+            this_guest.events_attending.append(this_event)
+            db.session.add(this_guest)
             db.session.commit()
     else:
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
+
         new_guest = Guest(name=guest_name, email=guest_email, phone=guest_phone)
-        new_guest.events_attending.append(selected_event)
+        new_guest.events_attending.append(this_event)
         db.session.add(new_guest)
         db.session.commit()
     
@@ -93,6 +96,5 @@ def rsvp(event_id):
 
 @main.route('/guest/<guest_id>')
 def guest_detail(guest_id):
-    # TODO: Get the guest with the given id and send to the template
-    selected_guest = Guest.query.filter_by(id=guest_id).one()
-    return render_template('guest_detail.html', selected_guest=selected_guest)
+    this_guest = Guest.query.filter_by(id=guest_id).one()
+    return render_template('guest_detail.html', this_guest=this_guest)
