@@ -43,8 +43,11 @@ class Event(db.Model):
     description = db.Column(db.String(200), nullable=False)
     date_and_time = db.Column(db.DateTime, nullable=False)
 
+    event_type = db.Column(db.Enum(Event_type), default=Event_type.CONFERENCE)
+
     guest_id = db.Column(db.Integer, db.ForeignKey('guest.id'), nullable=False)
-    guests = db.relationship('Guest', back_populates='')
+    guests = db.relationship('Guest', secondary='guest_event', back_populates='events_attending')
+
 
 # STRETCH CHALLENGE: Add a field `event_type` as an Enum column that denotes the
 # type of event (Party, Study, Networking, etc)
