@@ -39,8 +39,6 @@ def create():
             return render_template('create.html', 
                 error='Incorrect datetime format! Please try again.')
 
-        # TODO: Create a new event with the given title, description, & 
-        # datetime, then add and commit to the database
         new_event = Event(title=new_event_title, description=new_event_description, date_and_time=date_and_time, event_type=event_type)
         db.session.add(new_event)
         db.session.commit()
@@ -54,9 +52,9 @@ def create():
 def event_detail(event_id):
     """Show a single event."""
 
-    # TODO: Get the event with the given id and send to the template
+    selected_event = Event.query.filter_by(id=event_id).one()
     
-    return render_template('event_detail.html')
+    return render_template('event_detail.html', selected_event=selected_event)
 
 
 @main.route('/event/<event_id>', methods=['POST'])
