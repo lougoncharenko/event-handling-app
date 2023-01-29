@@ -18,11 +18,11 @@ class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), nullable=False)
-    phone = db.Column(db.String(80), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
     
     # events_attending = db.Column(db.String(80), nullable=False)
     events_attending.id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
-    events_attending = db.relationship('Events', back_populates='')
+    events_attending = db.relationship('Event', secondary='guest_event', back_populates='guests')
 
     def __str__(self):
         return f'<Guest: {self.name}>'
