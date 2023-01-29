@@ -8,6 +8,11 @@ from sqlalchemy.orm import backref
 # - email: String column
 # - phone: String column
 # - events_attending: relationship to "Event" table with a secondary table
+class Event_type (enum.Enum):
+    PARTY = 1
+    STUDY = 2
+    NETWORKING = 3
+    CONFERENCE = 4
 
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
