@@ -61,24 +61,30 @@ def event_detail(event_id):
 def rsvp(event_id):
     """RSVP to an event."""
     # TODO: Get the event with the given id from the database
+    selected_event = Event.query.filter_by(id=event_id).one()
     is_returning_guest = request.form.get('returning')
     guest_name = request.form.get('guest_name')
 
     if is_returning_guest:
-        # TODO: Look up the guest by name. If the guest doesn't exist in the 
-        # database, render the event_detail.html template, and pass in an error
-        # message as `error`.
-
-        # TODO: If the guest does exist, add the event to their 
-        # events_attending, then commit to the database.
-        pass
+        selected_guest = Guest.query.filter_by(name=guest_name).one_or_none()
+        if selected_guest is None:
+            error = 'Guest not found!'
+            context = {
+                'error' : error,
+                'selected_event' : selected_event
+            }
+            return render_template('event_detail.html', **context)
+        else:
+            seleected_guest.events_attending.append(selected_event)
+            db.session.add(selected_guest)
+            db.session.commit()
     else:
         guest_email = request.form.get('email')
         guest_phone = request.form.get('phone')
-
-        # TODO: Create a new guest with the given name, email, and phone, and 
-        # add the event to their events_attending, then commit to the database.
-        pass
+        new_guest = Guest(name=guest_name, email=guest_email, phone=guest_phone)
+        new_guest.events_attending.append(selected_event)
+        db.session.add(new_guest)
+        db.session.commit()
     
     flash('You have successfully RSVP\'d! See you there!')
     return redirect(url_for('main.event_detail', event_id=event_id))
