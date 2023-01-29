@@ -48,6 +48,12 @@ class Event(db.Model):
     guest_id = db.Column(db.Integer, db.ForeignKey('guest.id'), nullable=False)
     guests = db.relationship('Guest', secondary='guest_event', back_populates='events_attending')
 
+    def __str__(self):
+        return f'<Event: {self.title}>'
+
+    def __repr__(self):
+        return f'<Event: {self.title} Description: {self.description}>'
+
 
 # STRETCH CHALLENGE: Add a field `event_type` as an Enum column that denotes the
 # type of event (Party, Study, Networking, etc)
