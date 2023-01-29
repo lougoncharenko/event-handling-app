@@ -30,6 +30,7 @@ def create():
         new_event_description = request.form.get('description')
         date = request.form.get('date')
         time = request.form.get('time')
+        event_type = request.form.get('event_type')
 
         try:
             date_and_time = datetime.strptime(
@@ -75,7 +76,7 @@ def rsvp(event_id):
             }
             return render_template('event_detail.html', **context)
         else:
-            seleected_guest.events_attending.append(selected_event)
+            selected_guest.events_attending.append(selected_event)
             db.session.add(selected_guest)
             db.session.commit()
     else:

@@ -3,7 +3,7 @@ from events_app import db
 from sqlalchemy.orm import backref
 import enum
 
-class Event_type (enum.Enum):
+class Event_type(enum.Enum):
     PARTY = 1
     STUDY = 2
     NETWORKING = 3
@@ -16,8 +16,8 @@ class Guest(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     events_attending = db.relationship('Event', secondary='guest_event', back_populates='guests')
 
-    def __str__(self):
-        return f'<Guest: {self.name}>'
+    # def __str__(self):
+    #     return f'<Guest: {self.name}>'
 
     def __repr__(self):
         return f'<Guest: {self.name} Email: {self.email}>'
